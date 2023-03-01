@@ -70,6 +70,7 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
     "exclude": ["node_modules"] /* excluindo a pasta node_modules */
   }
   ```
+
   <details>
 
   - `module` : especifica o sistema de módulo a ser utilizado no código JavaScript *(que será gerado pelo compilador)*;
@@ -176,5 +177,4 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   }
   ```
   > No arquivo `package.json`, insira o comando acima, dentro da chave "scripts". Agora, para rodar a aplicação basta executar o comando `npm run dev`
-  ```
 </details>
