@@ -120,7 +120,7 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
 
   - Criando o servidor
   ```sh
-  touch src/router.ts src/app.ts src/index.ts
+  touch src/router.ts src/app.ts src/server.ts
   ```
   ```js
   // src/router.ts
@@ -145,11 +145,10 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   export default app;
   ```
   ```js
-  // src/index.ts
+  // src/server.ts
   import app from './app';
 
   const PORT = 3001
-
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   ```
   > Neste arquivo, por ora, houve apenas a inicialização do pacote do Express, com a função `express()`. Tudo que o Express nos dá está dentro da variável `app`, é como se ela fosse um “grande objeto” cheio de funções e informações úteis.
@@ -161,13 +160,13 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   ```
   > Os arquivos JavaScript serão gerados dentro do diretório `./dist` *(diretório especificado na chave `outDir` do arquivo `tsconfig.json`)*. Agora, basta rodar a aplicação compilada utilizando o Node.
   ```sh
-  node ./dist/src/index.js
+  node ./dist/src/server.js
   ```
   - Script
   ```json
   "scripts": {
     "build": "npx tsc",
-    "start": "npm run build && node ./dist/src/index.js",
+    "start": "npm run build && node ./dist/src/server.js",
   }
   ```
   > No arquivo `package.json`, insira os comandos acima, dentro da chave "scripts".
@@ -194,7 +193,7 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   - Script
   ```json
   "scripts": {
-    "dev": "ts-node --respawn --transpileOnly src/index.ts",
+    "dev": "ts-node --respawn --transpileOnly src/server.ts",
   }
   ```
   > No arquivo `package.json`, insira o comando acima, dentro da chave "scripts". Agora, para rodar a aplicação basta executar o comando `npm run dev`
@@ -394,22 +393,19 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   export default connectToMongo;
   ```
   ```js
-  // src/index.ts
+  // src/server.ts
 
   import dotenv from 'dotenv';
   import connectToMongo from './database/mongoConnection';
   // import app from './app';
   
-
   dotenv.config();
-
   connectToMongo();
 
   // const PORT = 3001
-
   // app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   ```
-  > Adicione as linhas acima no arquivo `src/index.js`
+  > Adicione as linhas acima no arquivo `src/server.ts`
   ```js
   // src/models/example.ts
 

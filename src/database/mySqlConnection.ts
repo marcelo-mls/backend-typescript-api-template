@@ -3,7 +3,7 @@ import mysql from 'mysql2/promise';
 
 dotenv.config();
 
-const port = Number(process.env.MYSQL_USER)
+const port = Number(process.env.MYSQL_USER);
 
 const connection = mysql.createPool({
   port,
