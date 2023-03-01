@@ -446,7 +446,7 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   ```js
   db.examples.insertOne({column_example: 'example'})
   ```
-  > Da mesma forma a única collection em "test" deve ser "examples". Caso contrário apenas troque pelo nome da coleção correspondente em `db.<nome da collection>.insertOne()`
+  > Da mesma forma a única collection em "typescript_db" deve ser "examples". Caso contrário apenas troque pelo nome da coleção correspondente em `db.<nome da collection>.insertOne()`
   ```js
   db.examples.find()
   ```
