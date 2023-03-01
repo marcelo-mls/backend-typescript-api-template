@@ -4,14 +4,18 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
 
 ## Node
 
-<!-- <details> -->
-  <!-- <summary>. . .</summary> -->
+<details>
+  <summary>. . .</summary>
   
   - Inicialização
   ```sh
   npm init -y
   ```
   > Comando para iniciar uma aplicação Node.js. Ele vai criar o arquivo de configurações `package.json`
+  ```sh
+  npm i @types/node -D
+  ```
+  > o Node não vem por padrão com os pacotes de tipagens para trabalhar com TypeScript, por isso é necessário instalar a dependência que contém as tipagens do Node.
 
   - Estrutura de Pastas
   ```sh
@@ -19,12 +23,12 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   ```
   > Mesmo comando, porém já inicia a estrutura de pastas. Neste exemplo a pasta raiz se chama `backend`, se deseja outro nome, basta alterar.
 
-<!-- </details> -->
+</details>
 
 ## TypeScript
 
-<!-- <details> -->
-  <!-- <summary>. . .</summary> -->
+<details>
+  <summary>. . .</summary>
 
   - Instalação
   > A melhor prática para a utilização do Typescript em um projeto é instalá-lo como uma `devDependency` (por isso a *flag* `-D`), e utilizá-lo por meio do `npx`
@@ -73,7 +77,7 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   - `rootDir` : define a localização raiz dos arquivos TypeScript do projeto;
   - `outDir` : define a pasta onde ficará nosso código JavaScript compilado;
   - `preserveConstEnums` : Não deixa apagar as declarações de `const enum` no código JavaScript compilado;
-  - `esModuleInterop` : essa opção possibilita compilar módulos ES6 *(`import/export`)* para módulos CommonJS *(`require/module.export`)*;
+  - `esModuleInterop` : essa opção possibilita compilar módulos ES6 *(`import/export default`)* para módulos CommonJS *(`require/module.export`)*;
   - `forceConsistentCasingInFileNames` : Garante que as nomenclaturas estejam corretas *(maiúsculas e minúsculas)* nas importações; 
   - `strict` : essa opção ativa a verificação estrita de tipo;
   - `skipLibCheck` : Ignore a verificação de tipo de todos os arquivos `.d.ts.`;
@@ -84,7 +88,16 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   - `exclude` : seguindo a mesma lógica essa chave vai depois do objeto `CompilerOptions` e diz o que deve ser excluído da compilação para JavaScript.
   </details>
 
-<!-- </details> -->
+  - Executando
+  > Para rodar/compilar *(converter de TypeScript para JavaScript)* a aplicação execute:
+  ```sh
+  npx tsc
+  ```
+  > Os arquivos JavaScript serão gerados dentro do diretório `./dist` *(diretório especificado na chave `outDir` do arquivo `tsconfig.json`)*. Agora, basta rodar a aplicação compilada utilizando o Node.
+  ```sh
+  node ./dist/src/index.js
+  ```
+</details>
 
 
 ## Express
@@ -100,7 +113,7 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   ```sh
   npm i @types/express -D
   ```
-  > A biblioteca do Express não vem por padrão com os pacotes de tipagens para trabalhar com TypeScript, por isso é necessário instalar a dependência que contém a tipagem do Express.
+  > A biblioteca do Express não vem por padrão com os pacotes de tipagens para trabalhar com TypeScript, por isso é necessário instalar a dependência que contém as tipagens do Express.
 
   - Criando o servidor
   ```sh
