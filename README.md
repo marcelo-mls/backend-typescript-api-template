@@ -25,6 +25,10 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
 
 </details>
 
+
+
+
+
 ## TypeScript
 
 <details>
@@ -70,7 +74,6 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
     "exclude": ["node_modules"] /* excluindo a pasta node_modules */
   }
   ```
-
   <details>
 
   - `module` : especifica o sistema de módulo a ser utilizado no código JavaScript *(que será gerado pelo compilador)*;
@@ -89,6 +92,9 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   - `exclude` : seguindo a mesma lógica essa chave vai depois do objeto `CompilerOptions` e diz o que deve ser excluído da compilação para JavaScript.
   </details>
 </details>
+
+
+
 
 
 ## Express
@@ -156,6 +162,10 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   > No arquivo `package.json`, insira os comandos acima, dentro da chave "scripts".
 </details>
 
+
+
+
+
 ## Outras dependências & Configurações
 
 <details>
@@ -177,4 +187,258 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   }
   ```
   > No arquivo `package.json`, insira o comando acima, dentro da chave "scripts". Agora, para rodar a aplicação basta executar o comando `npm run dev`
+</details>
+
+
+
+
+
+<details>
+  <summary>
+  
+### Linter
+  </summary>
+  
+  Para garantir a qualidade de escrita do código! Vamos instalar e configurar o `ESLint`
+  - Instalação
+  ```sh
+  npx eslint --init
+  ```
+  > Após executar o comando acima, leia e responda atentamente as perguntas que apareceram no terminal para realizar a configuração do `ESLint`
+  - Script
+  ```json
+  "scripts": {
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+  }
+  ```
+  > No arquivo `package.json`, insira o comando acima, dentro da chave "scripts". Agora, para que o lint realize a autocorreção do código basta executar o comando `npm run lint`
+
+</details>
+
+
+
+
+
+<details>
+  <summary>
+  
+### Git
+  </summary>
+
+  Criando e configurando o arquivo `.gitignore`
+  ```sh
+  touch .gitignore && echo "node_modules\dist" > .gitignore
+  ```
+  > Ao longo do desenvolvimento da aplicação utilize o `.gitignore` para inserir arquivos e diretórios que não devem subir para o `github`
+</details>
+
+
+
+
+<details>
+    <summary>
+
+### DotEnv
+
+  </summary>
+
+  O pacote `dotenv` vai lidar com informações sensíveis da aplicação de uma forma mais segura. Ele vai nos ajudar a trabalhar com variáveis de ambiente. Principalmente na integração entre o `Express` e o `MySQL`.
+
+  - Instalação
+  ```sh
+  npm i dotenv
+  ```
+  - Configurações
+  ```sh
+  touch .env.example
+  ```
+  ```txt
+  // .env.example
+  MYSQL_HOST=localhost
+  MYSQL_PORT=3306
+  MYSQL_USER=root
+  MYSQL_PASSWORD=password
+  MYSQL_DATABASE=database_example
+  ```
+  > Após criar o arquivo não se esqueça de deletar o `.example` da extensão e adicionar o `.env` ao arquivo `.gitignore`
+  ```sh
+  echo ".env" >> .gitignore
+  ```
+  > Adicione a linha abaixo no arquivo `server.js`
+  ```js
+  // src/database/connection.ts
+  require('dotenv').config();
+  
+  dotenv.config()
+  ```
+  > Quando criar o arquivo de conexão ao banco de dados. Adicione as linhas acima.
+  </details>
+
+
+
+
+
+  ## Banco de Dados
+<details>
+  <summary>
+
+### MySQL
+  </summary>
+
+  - Conector
+  ```sh
+  npm i mysql2
+  ```
+  > A integração entre o `Express` e o `MySQL` será feita através do módulo `mysql2`.
+
+  - Docker
+  ```sh
+  docker run --name mysql -e MYSQL_ROOT_PASSWORD=password -p 3306:3306 -d mysql
+  ```
+  > **ATENÇÃO!** na flag `MYSQL_ROOT_PASSWORD` informe a senha definida do arquivo `.env`, o arquivo que **NÃO** vai para o `github`. Neste **EXEMPLO** foi utilizada a senha ilustrativa `password`. Informe também a porta passada no `.env`. Exemplo: **[porta_no_pc]:[porta_no_docker]**
+
+  [Documentação Docker:MySQL](https://hub.docker.com/_/mysql)
+
+  - Configurando a Conexão
+  ```sh
+  mkdir src/database && touch src/database/mySqlConnection.ts
+  ```
+  ```js
+  // src/database/mySqlConnection.ts
+  import dotenv from 'dotenv';
+  import mysql from 'mysql2/promise';
+
+  dotenv.config();
+
+  const connection = mysql.createPool({
+    host: process.env.MYSQL_HOST,
+    port: process.env.MYSQL_PORT,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+  });
+
+  export default connection;
+  ```
+
+   - Criando Tabela de Exemplo
+  ```sql
+  CREATE DATABASE IF NOT EXISTS database_example;
+
+  USE database_example;
+
+  CREATE TABLE table_example (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    column_example VARCHAR(45) NOT NULL,
+    created_at VARCHAR(45) NOT NULL
+  );
+
+  INSERT INTO table_example (`id`, `column_example`, `created_at`)
+  VALUES ('1', 'example', 'example');
+  ```
+  > Execute a query acima no `MySQL Workbench`
+</details>
+
+
+
+
+
+<details>
+  <summary>
+  
+### MongoDB
+  </summary>
+
+  - ODM
+  ```sh
+  npm i mongoose
+  ```
+
+  - Docker
+  ```sh
+  docker run --name mongodb -p 27017:27017 -d mongo
+  ```
+  [Documentação Docker:MongoDB](https://hub.docker.com/_/mongo)
+
+  - Configurando a Conexão (e um pouco mais)
+  ```sh
+  mkdir src/database src/models && touch src/database/mongoConnection.ts src/models/example.ts
+  ```
+  ```js
+  // src/database/mongoConnection.ts
+
+  import mongoose from 'mongoose';
+  import dotenv from 'dotenv';
+
+  dotenv.config();
+
+  async function connectToMongo() {
+    mongoose.connect('mongodb://localhost:27017/')
+      .then(() => console.log('MongoDB successfully connected!'))
+      .catch((error) => console.log('Error connecting to MongoDB\n', error));
+  }
+
+  export default connectToMongo;
+  ```
+  ```js
+  // src/index.ts
+
+  import dotenv from 'dotenv';
+  import connectToMongo from './database/mongoConnection';
+  // import app from './app';
+  
+
+  dotenv.config();
+
+  connectToMongo();
+
+  // const PORT = 3001
+
+  // app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  ```
+  > Adicione as linhas acima no arquivo `src/index.js`
+  ```js
+  // src/models/example.ts
+
+  import { Schema, model } from 'mongoose';
+
+   const exampleSchema = new Schema({
+    column_example: { 
+      type: String,
+      required: true 
+    }
+  },
+  { timestamps: true });
+
+  const ModelExample = model('examples', exampleSchema);
+
+  export default ModelExample;
+  ```
+
+  - Criando Coleção de Exemplo
+  ```sh
+  docker exec -it mongodb sh
+  ```
+  > Agora vc está dentro do terminal do Container com Mongo
+  ```sh
+  mongosh
+  ```
+  ```sh
+  show dbs
+  ```
+  ```sh
+  use test
+  ```
+  > Seguindo todos os passos acima, o banco criado deve ser o "test". Caso ele não exista, acesse o db correspondente pelo comando `use <nome do db>`
+  ```sh
+  show collections
+  ```
+  ```js
+  db.examples.insertOne({column_example: 'example'})
+  ```
+  > Da mesma forma a única collection em "test" deve ser "examples". Caso contrário apenas troque pelo nome da coleção correspondente em `db.<nome da collection>.insertOne()`
+  ```js
+  db.examples.find()
+  ```
+  > Este ultimo comando é apenas para ver os documentos existentes na coleção.
 </details>
