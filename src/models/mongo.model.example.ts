@@ -1,13 +1,14 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
-const exampleSchema = new Schema({
-  column_example: { 
-    type: String,
-    required: true 
-  }
-},
-{ timestamps: true });
+interface IExample extends Document {
+  column_example: string
+}
 
-const ModelExample = model('examples', exampleSchema);
+const exampleSchema = new Schema(
+  { column_example: { type: String, required: true }},
+  { timestamps: true }
+);
+
+const ModelExample = model<IExample>('examples', exampleSchema);
 
 export default ModelExample;

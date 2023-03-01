@@ -385,7 +385,7 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   dotenv.config();
 
   async function connectToMongo() {
-    mongoose.connect('mongodb://localhost:27017/')
+    mongoose.connect('mongodb://localhost:27017/typescript_db')
       .then(() => console.log('MongoDB successfully connected!'))
       .catch((error) => console.log('Error connecting to MongoDB\n', error));
   }
@@ -409,17 +409,18 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   ```js
   // src/models/example.ts
 
-  import { Schema, model } from 'mongoose';
+  import { Schema, model, Document } from 'mongoose';
 
-   const exampleSchema = new Schema({
-    column_example: { 
-      type: String,
-      required: true 
-    }
-  },
-  { timestamps: true });
+  interface IExample extends Document {
+    column_example: string
+  }
 
-  const ModelExample = model('examples', exampleSchema);
+  const exampleSchema = new Schema(
+    { column_example: { type: String, required: true }},
+    { timestamps: true }
+  );
+
+  const ModelExample = model<IExample>('examples', exampleSchema);
 
   export default ModelExample;
   ```
@@ -436,9 +437,9 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   show dbs
   ```
   ```sh
-  use test
+  use typescript_db
   ```
-  > Seguindo todos os passos acima, o banco criado deve ser o "test". Caso ele não exista, acesse o db correspondente pelo comando `use <nome do db>`
+  > Seguindo todos os passos acima, o banco criado deve ser o "typescript_db". Caso ele não exista, acesse o db correspondente pelo comando `use <nome do db>`
   ```sh
   show collections
   ```
