@@ -120,16 +120,27 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
 
   - Criando o servidor
   ```sh
-  touch src/app.ts src/index.ts
+  touch src/router.ts src/app.ts src/index.ts
+  ```
+  ```js
+  // src/router.ts
+  import express from 'express';
+
+  const router = express.Router();
+
+  export default router;
   ```
   ```js
   // src/app.ts
   import express from 'express';
   import 'express-async-errors';
 
+  import router from './router';
+
   const app = express();
 
   app.use(express.json());
+  app.use(router);
 
   export default app;
   ```
@@ -227,7 +238,7 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
 
   Criando e configurando o arquivo `.gitignore`
   ```sh
-  touch .gitignore && echo "node_modules\dist" > .gitignore
+  touch .gitignore && echo "node_modules\ndist" > .gitignore
   ```
   > Ao longo do desenvolvimento da aplicação utilize o `.gitignore` para inserir arquivos e diretórios que não devem subir para o `github`
 </details>
@@ -258,7 +269,7 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   MYSQL_PORT=3306
   MYSQL_USER=root
   MYSQL_PASSWORD=password
-  MYSQL_DATABASE=database_example
+  MYSQL_DATABASE=database
   ```
   > Após criar o arquivo não se esqueça de deletar o `.example` da extensão e adicionar o `.env` ao arquivo `.gitignore`
   ```sh
@@ -310,9 +321,11 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
 
   dotenv.config();
 
+  const port = Number(process.env.MYSQL_USER)
+
   const connection = mysql.createPool({
+    port,
     host: process.env.MYSQL_HOST,
-    port: process.env.MYSQL_PORT,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
