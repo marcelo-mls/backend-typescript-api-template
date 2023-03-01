@@ -87,22 +87,12 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   - `include` : essa chave vai depois do objeto `CompilerOptions` ela dita os arquivos ou diretórios que devem ser incluídos compilação para JavaScript;
   - `exclude` : seguindo a mesma lógica essa chave vai depois do objeto `CompilerOptions` e diz o que deve ser excluído da compilação para JavaScript.
   </details>
-
-  - Executando
-  > Para rodar/compilar *(converter de TypeScript para JavaScript)* a aplicação execute:
-  ```sh
-  npx tsc
-  ```
-  > Os arquivos JavaScript serão gerados dentro do diretório `./dist` *(diretório especificado na chave `outDir` do arquivo `tsconfig.json`)*. Agora, basta rodar a aplicação compilada utilizando o Node.
-  ```sh
-  node ./dist/src/index.js
-  ```
 </details>
 
 
 ## Express
-<!-- <details> -->
-  <!-- <summary>. . .</summary> -->
+<details>
+  <summary>. . .</summary>
   
   O framework Express ajuda a organizar e construir APIs robustas e flexíveis
 
@@ -115,37 +105,76 @@ o README detalha todas (ou quase todas :upside_down_face:) as etapas que foram e
   ```
   > A biblioteca do Express não vem por padrão com os pacotes de tipagens para trabalhar com TypeScript, por isso é necessário instalar a dependência que contém as tipagens do Express.
 
+  - Lidando com erros assíncronos
+  ```sh
+  npm i express-async-errors -D
+  ```
+  > Por padrão, o Express vai encaminhar todos os erros lançados para serem tratados pelos middlewares de erros. No entanto, erros lançados em middlewares assíncronos não são tratados do mesmo jeito. A solução mais simples para esse problema está em um pacote chamado `express-async-errors`
+
   - Criando o servidor
   ```sh
-  touch src/app.js src/server.js
+  touch src/app.ts src/index.ts
   ```
   ```js
-  // src/app.js
-  require('express-async-errors');
-  const express = require('express');
+  // src/app.ts
+  import express from 'express';
+  import 'express-async-errors';
 
   const app = express();
 
   app.use(express.json());
 
-  module.exports = app;
+  export default app;
   ```
   ```js
-  // src/server.js
-  const app = require('./app');
+  // src/index.ts
+  import app from './app';
 
   const PORT = 3001
 
-  app.listen(PORT, () => console.log(`server running on port ${PORT}`));
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   ```
   > Neste arquivo, por ora, houve apenas a inicialização do pacote do Express, com a função `express()`. Tudo que o Express nos dá está dentro da variável `app`, é como se ela fosse um “grande objeto” cheio de funções e informações úteis.
-  
+
+  - Executando
+  > Para rodar/compilar *(converter de TypeScript para JavaScript)* a aplicação execute:
+  ```sh
+  npx tsc
+  ```
+  > Os arquivos JavaScript serão gerados dentro do diretório `./dist` *(diretório especificado na chave `outDir` do arquivo `tsconfig.json`)*. Agora, basta rodar a aplicação compilada utilizando o Node.
+  ```sh
+  node ./dist/src/index.js
+  ```
   - Script
   ```json
   "scripts": {
-    "start": "node src/server.js",
+    "build": "npx tsc",
+    "start": "npm run build && node ./dist/src/index.js",
   }
   ```
-  > No arquivo `package.json`, insira o comando acima, dentro da chave "scripts". Agora, para rodar a aplicação basta executar o comando `npm start`
+  > No arquivo `package.json`, insira os comandos acima, dentro da chave "scripts".
+</details>
 
-<!-- </details> -->
+## Outras dependências & Configurações
+
+<details>
+  <summary>
+
+### TS-Node-Dev
+  </summary>
+
+  - Instalação
+  ```sh
+  npm i ts-node-dev -D
+  ```
+  > Usando o servidor com `ts-node-dev`, toda vez que algum arquivo é salvo, o `ts-node-dev` compila e reinicia o servidor automaticamente!
+
+  - Script
+  ```json
+  "scripts": {
+    "dev": "ts-node --respawn --transpileOnly src/index.ts",
+  }
+  ```
+  > No arquivo `package.json`, insira o comando acima, dentro da chave "scripts". Agora, para rodar a aplicação basta executar o comando `npm run dev`
+  ```
+</details>
